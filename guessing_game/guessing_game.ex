@@ -3,23 +3,46 @@ defmodule GuessingGame do
   guess between  low and high numbers - guess middle value
   """
 
+  @doc """
+  start guessing number
+  """
+  @spec guess(integer(), integer()) :: :ok
+  def guess(low, high) when low > high, do: guess(high, low)
+
   def guess(low, high) do
-    IO.puts(low)
-    IO.puts(high)
+    response = IO.gets("Hmm... Maybe you're thinking about #{mid(low, high)}?\n")
+
+    case String.trim(response) do
+      "bigger" ->
+        bigger(low, high)
+
+      "smaller" ->
+        smaller(low, high)
+
+      "yes" ->
+        "I knew that I've guessed your number!"
+
+      _ ->
+        IO.puts(~s(Type "bigger", "smaller", "yes"))
+        guess(low, high)
+    end
   end
 
-  def mid(low, high) do
+  @spec mid(integer(), integer()) :: integer()
+  defp mid(low, high) do
     div(low + high, 2)
   end
 
-  def bigger(low, high) do
+  @spec bigger(integer(), integer()) :: :ok
+  defp bigger(low, high) do
     mid(low, high)
     |> Kernel.+(1)
     |> min(high)
     |> guess(high)
   end
 
-  def smaller(low, high) do
+  @spec smaller(integer(), integer()) :: :ok
+  defp smaller(low, high) do
     mid(low, high)
     |> Kernel.-(1)
     |> max(low)
