@@ -6,7 +6,7 @@ defmodule Greeter do
   @doc """
   Function for greeting
   """
-  @spec greet(name :: String.t()) :: :ok
+  @spec greet(name :: String.t()) :: String.t()
   def greet(name \\ "") do
     str = name |> String.trim() |> String.capitalize()
 
